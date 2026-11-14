@@ -36,8 +36,6 @@
   .opts input{border:1px solid var(--line);border-radius:8px;padding:9px 10px;font:inherit;font-size:14px;color:var(--ink)}
   @media (max-width:760px){.opts{grid-template-columns:1fr}}
   .row{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:18px}
-  .sources{display:flex;gap:14px;align-items:center;font-size:14px;color:var(--muted)}
-  .sources label{display:flex;gap:6px;align-items:center;color:var(--ink);cursor:pointer}
   .btn{background:var(--accent);color:#fff;border:0;border-radius:10px;padding:11px 22px;font:inherit;font-weight:600;cursor:pointer}
   .btn:disabled{opacity:.45;cursor:default}
   .btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent);padding:8px 16px;font-weight:500}
@@ -95,10 +93,6 @@
       <div class="fname" id="fname"></div>
       <input type="file" id="file" accept=".bib,.bibtex,.txt" hidden>
     </div>
-    <details id="pasteBox">
-      <summary data-i18n="paste"></summary>
-      <textarea id="paste" spellcheck="false" placeholder="@inproceedings{key, title={...}, author={...}, year={...}}"></textarea>
-    </details>
     <details id="optBox">
       <summary data-i18n="options"></summary>
       <div class="opts">
@@ -107,12 +101,6 @@
       </div>
     </details>
     <div class="row">
-      <div class="sources">
-        <span data-i18n="sources"></span>
-        <label><input type="checkbox" value="dblp" checked> DBLP</label>
-        <label><input type="checkbox" value="crossref" checked> Crossref</label>
-        <label><input type="checkbox" value="openalex" checked> OpenAlex</label>
-      </div>
       <button class="btn" id="start" data-i18n="start"></button>
       <span class="privacy" data-i18n="privacy"></span>
     </div>
@@ -557,11 +545,9 @@ if (typeof module !== "undefined") module.exports = RC;
     en: {
       tagline: "Upload a .bib file. Every entry is checked against DBLP, Crossref and OpenAlex, and anything that cannot be confirmed is flagged for you to verify.",
       drop: "Drop a .bib file here, or click to choose",
-      paste: "Or paste BibTeX",
-      options: "More accurate lookups (recommended)",
+      options: "Better lookups (recommended)",
       mailto: "Your email, sent to Crossref for a higher rate limit",
       oakey: "OpenAlex API key, free at openalex.org",
-      sources: "Databases",
       start: "Check references",
       privacy: "The file stays in your browser. Only titles and DOIs are sent to the databases.",
       progress: "{d} / {n} checked",
@@ -614,7 +600,7 @@ if (typeof module !== "undefined") module.exports = RC;
   file.onchange = () => file.files[0] && readFile(file.files[0]);
   function readFile(f) {
     const r = new FileReader();
-    r.onload = () => { fileText = r.result; $("fname").textContent = f.name; $("paste").value = ""; };
+    r.onload = () => { fileText = r.result; $("fname").textContent = f.name; };
     r.readAsText(f);
   }
 
@@ -628,7 +614,7 @@ if (typeof module !== "undefined") module.exports = RC;
     store.set("refcheck-oakey", RC.CONFIG.openalexKey);
   }
   function enabledSources() {
-    return [...document.querySelectorAll(".sources input:checked")].map(i => i.value);
+    return ["dblp", "crossref", "openalex"];
   }
 
   async function runPool(idxs) {
@@ -661,7 +647,7 @@ if (typeof module !== "undefined") module.exports = RC;
   }
 
   $("start").onclick = () => {
-    const text = $("paste").value.trim() || fileText;
+    const text = fileText;
     entries = RC.parseBib(text || "");
     if (!entries.length) { alertBox(t("noEntries")); return; }
     results = entries.map(() => ({ status: "pending", reasons: [], match: null }));
