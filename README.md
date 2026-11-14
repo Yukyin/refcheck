@@ -17,11 +17,3 @@ Check every entry in a BibTeX file against DBLP, Crossref and OpenAlex. Anything
 | Lookup failed | A database did not respond for this entry. Retry. |
 
 Each entry also links to a Google Scholar search for manual checking.
-
-## Scope
-
-RefCheck verifies that a reference exists and that its metadata is correct. It does not judge whether a citation supports the claim it is attached to.
-
-## License
-
-MIT
