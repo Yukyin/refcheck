@@ -6,10 +6,10 @@ Check every entry in a BibTeX file against DBLP, Crossref and OpenAlex. Anything
 
 <img src="screenshot.png" alt="RefCheck screenshot" width="720">
 
-## Results
+## Description
 
 | Result | Meaning |
-|:---:|---|
+|:---|:---|
 | Verified | Matches a database record. |
 | Mismatch | The paper exists, but some details differ. The database record is shown. |
 | Uncertain | A close but not exact title match, or the entry lacks a field. |
