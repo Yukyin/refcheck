@@ -282,14 +282,19 @@ const RC = (() => {
   function lastName(a) {
     if (!a) return "";
     if (/^others$/i.test(a.trim())) return "";
-    if (a.includes(",")) return norm(a.split(",")[0]);
-    const toks = norm(a).split(" ").filter(Boolean);
+    const SUFFIX = /^(jr|sr|ii|iii|iv)$/;
+    if (a.includes(",")) {
+      const parts = a.split(",").map(x => x.trim());
+      const first = norm(parts[0]).split(" ").filter(t => t && !SUFFIX.test(t));
+      return first.join(" ");
+    }
+    const toks = norm(a).split(" ").filter(t => t && !SUFFIX.test(t));
     return toks.length ? toks[toks.length - 1] : "";
   }
   function firstInitial(a) {
     if (!a || /^others$/i.test(a.trim())) return "";
     let given;
-    if (a.includes(",")) given = norm(a.split(",").slice(1).join(" "));
+    if (a.includes(",")) given = norm(a.split(",").slice(1).join(" ")).split(" ").filter(t => t && !/^(jr|sr|ii|iii|iv)$/.test(t)).join(" ");
     else { const t = norm(a).split(" ").filter(Boolean); given = t.slice(0, -1).join(" "); }
     return given ? given[0] : "";
   }
@@ -553,7 +558,7 @@ if (typeof module !== "undefined") module.exports = RC;
       tagline: "Upload a .bib file. Every entry is checked against DBLP, Crossref and OpenAlex, and anything that cannot be confirmed is flagged for you to verify.",
       drop: "Drop a .bib file here, or click to choose",
       paste: "Or paste BibTeX",
-      options: "Faster lookups (optional)",
+      options: "More accurate lookups (recommended)",
       mailto: "Your email, sent to Crossref for a higher rate limit",
       oakey: "OpenAlex API key, free at openalex.org",
       sources: "Databases",
