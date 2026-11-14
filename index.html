@@ -31,6 +31,8 @@
   summary{cursor:pointer;color:var(--muted);font-size:14px}
   textarea{width:100%;min-height:140px;margin-top:10px;border:1px solid var(--line);border-radius:10px;padding:12px;
     font:13px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace;resize:vertical}
+  #optBox{margin-top:18px}
+  .optTitle{font-size:14px;font-weight:600;color:var(--ink)}
   .opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
   .opts label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
   .opts input{border:1px solid var(--line);border-radius:8px;padding:9px 10px;font:inherit;font-size:14px;color:var(--ink)}
@@ -91,13 +93,13 @@
       <div class="fname" id="fname"></div>
       <input type="file" id="file" accept=".bib,.bibtex,.txt" hidden>
     </div>
-    <details id="optBox">
-      <summary data-i18n="options"></summary>
+    <div id="optBox">
+      <div class="optTitle" data-i18n="options"></div>
       <div class="opts">
         <label><span data-i18n="mailto"></span><input id="mailto" type="email" placeholder="you@university.edu" autocomplete="email"></label>
         <label><span data-i18n="oakey"></span><input id="oakey" type="text" placeholder="OpenAlex API key" autocomplete="off"></label>
       </div>
-    </details>
+    </div>
     <div class="row">
       <button class="btn" id="start" data-i18n="start"></button>
     </div>
