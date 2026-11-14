@@ -1,6 +1,6 @@
 # RefCheck
 
-Check every entry in a BibTeX file against DBLP, Crossref and OpenAlex. Anything that cannot be confirmed is flagged for manual review.
+Check every entry in a BibTeX file against academic databases. Anything that cannot be confirmed is flagged for manual review.
 
 <a href="https://yukyin.github.io/refcheck/"><img src="open-button.svg" alt="Open RefCheck" width="180"></a>
 
