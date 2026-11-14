@@ -4,6 +4,8 @@ Check every entry in a BibTeX file against DBLP, Crossref and OpenAlex. Anything
 
 <a href="https://yukyin.github.io/refcheck/"><img src="open-button.svg" alt="Open RefCheck" width="180"></a>
 
+<img src="screenshot.png" alt="RefCheck screenshot" width="720">
+
 ## Results
 
 | Result | Meaning |
