@@ -39,7 +39,6 @@
   .btn{background:var(--accent);color:#fff;border:0;border-radius:10px;padding:11px 22px;font:inherit;font-weight:600;cursor:pointer}
   .btn:disabled{opacity:.45;cursor:default}
   .btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent);padding:8px 16px;font-weight:500}
-  .privacy{color:var(--muted);font-size:13px;margin-left:auto}
   .progress{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:18px;display:none}
   .progress div{height:100%;width:0;background:var(--accent);transition:width .2s}
   .ptext{font-size:13px;color:var(--muted);margin-top:6px;display:none}
@@ -48,7 +47,6 @@
   .chip:hover{border-color:#bdb8ab}
   .chip.on{outline:2px solid var(--ink)}
   .chip .n{font-size:26px;font-weight:700;font-family:Georgia,serif}
-  .chip .d{font-size:12.5px;color:var(--muted);margin-top:2px}
   .toolbar{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
   table{width:100%;border-collapse:separate;border-spacing:0;margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
   th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);background:#faf9f6;padding:10px 14px;border-bottom:1px solid var(--line)}
@@ -102,7 +100,6 @@
     </details>
     <div class="row">
       <button class="btn" id="start" data-i18n="start"></button>
-      <span class="privacy" data-i18n="privacy"></span>
     </div>
     <div class="progress" id="progress"><div></div></div>
     <div class="ptext" id="ptext"></div>
@@ -549,15 +546,14 @@ if (typeof module !== "undefined") module.exports = RC;
       mailto: "Your email",
       oakey: "OpenAlex API key, free at openalex.org",
       start: "Check references",
-      privacy: "The file stays in your browser. Only titles and DOIs are sent to the databases.",
       progress: "{d} / {n} checked",
       noEntries: "No BibTeX entries found.",
-      all: "All", allD: "Every entry in the file.",
-      pass: "Verified", passD: "Matches a database record.",
-      mismatch: "Mismatch", mismatchD: "The paper exists, but some details differ. The database record is shown.",
-      doubt: "Uncertain", doubtD: "A close but not exact match, or the entry lacks a field. Please verify.",
-      notfound: "Not found", notfoundD: "No matching record. Books, web pages and some workshop papers are often not indexed, so please verify manually.",
-      error: "Lookup failed", errorD: "A database did not respond for this entry. Use Retry.",
+      all: "All",
+      pass: "Verified",
+      mismatch: "Mismatch",
+      doubt: "Uncertain",
+      notfound: "Not found",
+      error: "Lookup failed",
       pending: "Checking",
       colEntry: "Entry in your .bib", colStatus: "Result", colMatch: "Closest database record", colNotes: "Notes",
       retry: "Retry unresolved", export: "Export CSV", scholar: "Search Google Scholar",
@@ -575,7 +571,6 @@ if (typeof module !== "undefined") module.exports = RC;
       typeNotIndexed: "Entries of type {x} are often not indexed.",
       partialFail: "Not reached: {x}.",
       viaDOI: "matched by DOI",
-      down: "{x} could not be reached from this page, so results rely on the other databases.",
       none: "No record",
       emptyFilter: "Nothing here.",
     },
@@ -641,8 +636,6 @@ if (typeof module !== "undefined") module.exports = RC;
       }
     }
     await Promise.all([worker(), worker(), worker()]);
-    const down = Object.keys(health).filter(n => health[n].ok === 0 && health[n].fail > 0).map(n => ({ dblp: "DBLP", crossref: "Crossref", openalex: "OpenAlex" }[n]));
-    if (down.length) pt.textContent += " · " + t("down", down.join(", "));
     running = false; $("start").disabled = false; $("retry").disabled = false;
   }
 
@@ -669,7 +662,7 @@ if (typeof module !== "undefined") module.exports = RC;
     $("legend").innerHTML = ["all", ...ORDER].map(s =>
       `<button class="chip ${filter === s ? "on" : ""}" data-f="${s}">
          <span class="badge s-${s === "all" ? "pending" : s}">${esc(t(s))}</span>
-         <div class="n">${counts[s]}</div><div class="d">${esc(t(s + "D"))}</div></button>`).join("");
+         <div class="n">${counts[s]}</div></button>`).join("");
     $("legend").querySelectorAll(".chip").forEach(b => b.onclick = () => { filter = b.dataset.f; render(); });
 
     const rows = entries.map((e, i) => [e, results[i], i])
